@@ -28,22 +28,18 @@ namespace Finance
             {
                 for (int i = 1; i <= lastMonth; i++)
                 {
-                    int days = DateTime.DaysInMonth(year, i);
-                    for(int j = 1; j <= days; j++)
+                    try
                     {
-                        try
-                        {
-                            url = @"https://www.nbrb.by/api/exrates/rates/" + $"{currency}" + "?parammode=2&ondate=" + $"{year}" + "-" + $"{i}" + "-" + $"{j}";
-                            var response = await client.GetAsync(url);
-                            response.EnsureSuccessStatusCode();
-                            string responseBody = await response.Content.ReadAsStringAsync();
-                            Console.WriteLine(responseBody);
-                            await sw.WriteLineAsync(responseBody);
-                        }
-                        catch (HttpRequestException e)
-                        {
-                            Console.WriteLine("Ошибка запроса страницы");
-                        }
+                        url = @"https://www.nbrb.by/api/exrates/rates/" + $"{currency}" + "?parammode=2&ondate=" + $"{year}" + "-" + $"{i}";
+                        var response = await client.GetAsync(url);
+                        response.EnsureSuccessStatusCode();
+                        string responseBody = await response.Content.ReadAsStringAsync();
+                        Console.WriteLine(responseBody);
+                        await sw.WriteLineAsync(responseBody);
+                    }
+                    catch (HttpRequestException e)
+                    {
+                        Console.WriteLine("Ошибка запроса страницы");
                     }
                 }
             }
