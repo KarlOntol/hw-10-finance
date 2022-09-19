@@ -16,33 +16,33 @@ namespace Finance
                     CurrenceDataItems.Add(data);
                 }
             }
-            var itemsList = CountStonks(CurrenceDataItems);
+            var itemsList = CountStonks(CurrenceDataItems, 10000m);
             var tuple = GetMinAndMaxItems(itemsList);
             Console.WriteLine($"Минимальное значение баланса:\n{tuple.Item1},\nМаксимальное значение баланса:\n{tuple.Item2}");
 
         }
 
-        public static List<ReportItems> CountStonks(List<CurrencyData> items)
+        private static List<ReportItems> CountStonks(List<CurrencyData> items, decimal sum)
         {
             var reportList = new List<ReportItems>();
 
             decimal balance;
             for(int i = 0; i < items.Count - 3; i++)
             {
-                balance = 10000m;
-                decimal firBalance = balance * items[i].Cur_OfficialRate;
+                balance = sum;
+                decimal firBalance = balance / items[i].Cur_OfficialRate;
 
                 for (int k = i + 1; k < items.Count - 2; k++)
                 {
-                    decimal secBalance = firBalance / items[k].Cur_OfficialRate;
+                    decimal secBalance = firBalance * items[k].Cur_OfficialRate;
 
                     for (int n = k + 1; n < items.Count - 1; n++)
                     {
-                        decimal thiBalance = secBalance * items[n].Cur_OfficialRate;
+                        decimal thiBalance = secBalance / items[n].Cur_OfficialRate;
 
                         for (int m = n + 1; m < items.Count; m++)
                         {
-                            decimal fouBalance = thiBalance / items[m].Cur_OfficialRate;
+                            decimal fouBalance = thiBalance * items[m].Cur_OfficialRate;
                             reportList.Add(
                                 new ReportItems() 
                                     {
@@ -61,7 +61,7 @@ namespace Finance
             return reportList;
         }
 
-        public static (ReportItems, ReportItems) GetMinAndMaxItems(List<ReportItems> items)
+        private static (ReportItems, ReportItems) GetMinAndMaxItems(List<ReportItems> items)
         {
             ReportItems minItem = items[0];
             ReportItems maxItem = items[0];

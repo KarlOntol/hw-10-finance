@@ -12,7 +12,7 @@
         {
             return($"Первая дата (продажа) - {firstDate}, Вторая дата (покупка) - {secondDate}, " +
                    $"Третья дата (продажа) - {thirdDate}, Четвертая дата (покупка) - {fourthDate}, " +
-                   $"Баланс - {totalBalance}");
+                   $"Баланс - {totalBalance} BYN");
         }
 
         public static bool operator >(ReportItems item1, ReportItems item2)
